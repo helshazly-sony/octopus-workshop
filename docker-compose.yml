@@ -1,0 +1,16 @@
+services:
+  neo4j:
+    network_mode: host
+    image: shazly/neo4j-spark:5.12.0
+    container_name: octupos-workshop
+    restart: unless-stopped
+    volumes:
+      - /home/helshazly/workshop/:/root/workshop
+    environment: 
+
+      NEO4J_apoc_export_file_enabled: ´true´
+      NEO4J_apoc_import_file_enabled: ´true´ 
+      NEO4J_apoc_import_file_use__neo4j__config: ´true´
+
+      NEO4J_AUTH: neo4j/password
+
