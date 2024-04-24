@@ -12,11 +12,13 @@ function clone_repo() {
 }
 
 function run_build() {
+    apt install -y lsof
     # Change directory to the server directory
     cd octupos/server
 
     # Run the build script (assuming it's named 'build.sh')
-    ./build.sh -s 
+    ./build.sh -f data-transfer artifacts_test
+    cp artifacts/flight-* artifacts_test 
 }
 
 function run_serve() {
