@@ -17,8 +17,11 @@ function run_build() {
     cd octupos/server
 
     # Run the build script (assuming it's named 'build.sh')
-    ./build.sh -f data-transfer artifacts_test
-    cp artifacts/flight-* artifacts_test 
+    #./build.sh -f data-transfer artifacts_test
+    #cp artifacts/flight-* artifacts_test
+
+    cd ../..
+    python utils/movies_graph.py 
 }
 
 function run_serve() {
