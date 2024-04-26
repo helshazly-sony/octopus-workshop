@@ -513,12 +513,6 @@ CREATE (TheMatrix:Movie {title:'The Matrix', released:1999, tagline:'Welcome to 
       (JessicaThompson)-[:REVIEWED {summary:'You had me at Jerry', rating:92}]->(JerryMaguire)
 """
 
-def print_summary(summary):
-    if summary and summary.plan:
-        print(summary.plan['args']['string-representation'])
-    else:
-        print("No Plan is used!")
-
 def connector():
     CONN = "bolt://localhost:7687"
     AUTH = ("neo4j", "password")
@@ -528,7 +522,7 @@ def connector():
 
     return driver
 
-def create_neo4j_graph(driver):
+def execute_neo4j_queries(driver):
     _ = driver.execute_query(NEO4J_QUERY, database_="neo4j")    
 
     CONSTRAINTS = """
@@ -545,9 +539,44 @@ def create_neo4j_graph(driver):
     CREATE INDEX FOR (m:Movie) ON (m.released)
     """
     _ = driver.execute_query(INDEX, database_="neo4j")    
-   
+
+def create_neo4j_graph():
+    driver = connector()
+    execute_neo4j_queries(driver)
+    driver.close()
+
+def remove_escape_quotes(s):
+    return s.replace('\\"', '"')
+
+def build_graph_from_csv(filename):
+    import networkx as nx
+    import csv 
+
+    G = nx.Graph()
+
+    with open(filename, 'r', newline='', encoding='utf-8') as csvfile:
+        reader = csv.reader(csvfile)
+        next(reader)
+        for row in reader:
+            # Check if it's a node or relationship
+            if row[0]:  # Node
+                print(row[0])
+                node_type = row[1].split(":")[1]  # Extract node type from labels
+                if node_type == "Person":
+                    G.add_node(row[0], label="Person", born=row[2], name=remove_escape_quotes(row[3]))
+                elif node_type == "Movie":
+                    G.add_node(row[0], label="Movie", released=row[4], tagline=remove_escape_quotes(row[5]), title=remove_escape_quotes(row[6]))
+            else:  # Relationship
+                rel_type = row[9]
+                if rel_type == "ACTED_IN":
+                    G.add_edge(row[7], row[8], label="ACTED_IN", rating=remove_escape_quotes(row[10]), roles=remove_escape_quotes(row[11]))
+                elif rel_type == "DIRECTED":
+                    G.add_edge(row[7], row[8], label="DIRECTED")
+                elif rel_type == "REVIEWED":
+                    G.add_edge(row[7], row[8], label="REVIEWED", rating=remove_escape_quotes(row[10]), summary=remove_escape_quotes(row[11]))
+
+    return G
 
 if __name__ == "__main__":
-   driver = connector()
-   create_neo4j_graph(driver)
-   driver.close() 
+   create_neo4j_graph()
+   #graph = build_graph_from_csv("movies.csv")
