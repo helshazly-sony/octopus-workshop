@@ -2,7 +2,7 @@ services:
   neo4j:
     network_mode: host
     image: shazly/workshop:v1
-    container_name: octupos-workshop
+    container_name: octopus-workshop
     restart: unless-stopped
     volumes:
       - /home/helshazly/workshop/:/root/workshop

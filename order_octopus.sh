@@ -2,7 +2,7 @@
 
 function clone_repo() {
     # Clone the octupos repository
-    git clone git@github.com:helshazly-sony/octupos.git
+    git clone git@github.com:helshazly-sony/octopus.git
 
     # Check if cloning was successful
     if [ $? -ne 0 ]; then
@@ -14,7 +14,7 @@ function clone_repo() {
 function run_build() {
     apt install -y lsof
     # Change directory to the server directory
-    cd octupos/server
+    cd octopus/server
 
     # Run the build script (assuming it's named 'build.sh')
     #./build.sh -f data-transfer artifacts_test
@@ -51,8 +51,8 @@ function clean() {
     # Remove /tmp/flight_server.log if it exists
     rm -f /tmp/flight_server.log
 
-    # Remove octupos-server.log if it exists
-    rm -f /tmp/octupos-server.log
+    # Remove octopus-server.log if it exists
+    rm -f /tmp/octopus-server.log
 }
 
 # Parse command line options
