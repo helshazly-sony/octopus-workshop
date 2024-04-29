@@ -19,7 +19,8 @@ function run_build() {
     # Run the build script (assuming it's named 'build.sh')
     #./build.sh -f data-transfer artifacts_test
     #cp artifacts/flight-* artifacts_test
-
+    ./build.sh -s
+     
     cd ../..
     python utils/movies_graph.py 
 }
@@ -29,7 +30,7 @@ function run_serve() {
     clean
 
     # Change directory to the data-transfer examples bin directory
-    cd octupos/server/data-transfer/examples/bin || exit 1
+    cd octopus/server/data-transfer/examples/bin || exit 1
 
     # Run the flight server script in the background, redirecting output to /tmp/flight_server.log
     ./run_flight_server.sh > /tmp/flight_server.log 2>&1 &
