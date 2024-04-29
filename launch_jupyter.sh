@@ -1,3 +1,3 @@
 #!/bin/bash
 
-jupyter-notebook --allow-root
+jupyter-notebook --port 8886 --allow-root
