@@ -2,7 +2,7 @@
 
 function clone_repo() {
     # Clone the octupos repository
-    git clone git@github.com:helshazly-sony/octopus.git
+    git clone -b workshop git@github.com:helshazly-sony/octopus.git
 
     # Check if cloning was successful
     if [ $? -ne 0 ]; then
